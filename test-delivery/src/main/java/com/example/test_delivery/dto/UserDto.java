@@ -1,6 +1,7 @@
 package com.example.test_delivery.dto;
 
 import com.example.test_delivery.entities.Roles;
+import com.example.test_delivery.entities.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
-    private Long id;
+    //private Long id;
     private Roles role;
     private String name;
+    private UserStatus status;
 }

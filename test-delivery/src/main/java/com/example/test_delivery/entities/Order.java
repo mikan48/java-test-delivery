@@ -21,7 +21,7 @@ public class Order {
 
     private Double totalCost;
 
-    @OneToMany
+    @ManyToOne
     private Courier courier;
 
     @OneToMany

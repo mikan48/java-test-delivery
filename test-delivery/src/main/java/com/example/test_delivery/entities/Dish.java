@@ -20,7 +20,7 @@ public class Dish {
 
     private Double cost;
 
-    @OneToMany
+    @ManyToOne
     private Restaurant restaurant;
 
     @ManyToMany

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PushUpDto {
+public class CartDto {
     private Long id;
+    private Double totalCost;
 }

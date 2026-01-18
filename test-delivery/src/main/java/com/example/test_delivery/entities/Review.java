@@ -18,13 +18,12 @@ public class Review {
 
     @Min(value = 1)
     @Max(value = 5)
-    private Double rating;
-
+    private Integer rating;
     private String text;
 
-    @OneToMany
+    @ManyToOne
     private UserEntity user;
 
-    @OneToMany
+    @ManyToOne
     private Restaurant restaurant;
 }

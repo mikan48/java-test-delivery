@@ -18,9 +18,13 @@ public class Restaurant {
 
     private String name;
     private String adress;
+    private Double rating;
 
     private RestaurantStatus status;
 
     @OneToMany
     private List<Dish> dishes;
+
+    @OneToMany
+    private List<Review> reviews;
 }
