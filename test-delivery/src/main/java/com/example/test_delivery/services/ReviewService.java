@@ -50,4 +50,29 @@ public class ReviewService {
 
         return newReviewDto;
     }
+
+    public List<ReviewDto> getRestaurantReviews(Long restaurantId) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant Not Found; Restaurant id: " + restaurantId));
+
+        return restaurant.getReviews()
+                .stream()
+                .map(review -> modelMapper.map(review, ReviewDto.class)).toList();
+
+    }
+
+    public ReviewDto updateReview(Long reviewId, ReviewDto reviewDto) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ResourceNotFoundException("Review Not Found; Review id: " + reviewId));
+        modelMapper.map(reviewDto, review);
+        Review updatedReview = reviewRepository.save(review);
+
+        return modelMapper.map(updatedReview, ReviewDto.class);
+    }
+
+    public void deleteReview(Long reviewId) {
+        reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ResourceNotFoundException("Review Not Found; Review id: " + reviewId));
+        userRepository.deleteById(reviewId);
+    }
 }

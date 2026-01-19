@@ -14,4 +14,5 @@ public class RestaurantDto {
     private String name;
     private String adress;
     private RestaurantStatus status;
+    private Double rating;
 }

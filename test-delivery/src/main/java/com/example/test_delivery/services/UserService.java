@@ -43,7 +43,7 @@ public class UserService {
     public List<UserDto> getUsersByRole(String role) {
         return userRepository.findByRole(role)
                 .stream().map(user -> modelMapper.map(user, UserDto.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     //maybe not delete, but change status to smth like "deactivated" later

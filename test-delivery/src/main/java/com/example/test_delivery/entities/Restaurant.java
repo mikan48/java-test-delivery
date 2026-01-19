@@ -27,4 +27,17 @@ public class Restaurant {
 
     @OneToMany
     private List<Review> reviews;
+
+    public void setReviews(List<Review> newReviews) {
+        reviews = newReviews;
+
+        if (!newReviews.isEmpty()) {
+            Double ratingSum = 0D;
+            for(var review : reviews) {
+                ratingSum += review.getRating();
+            }
+
+            rating = ratingSum / reviews.size();
+        }
+    }
 }
