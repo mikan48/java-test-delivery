@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class DishService {
-    private final IDishRepository reviewRepository;
+    private final IDishRepository dishRepository;
     private final ModelMapper modelMapper;
 }

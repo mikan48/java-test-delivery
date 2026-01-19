@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class OrderService {
-    private final IOrderRepository reviewRepository;
+    private final IOrderRepository orderRepository;
     private final ModelMapper modelMapper;
 }

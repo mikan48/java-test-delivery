@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CartService {
-    private final ICartRepository reviewRepository;
+    private final ICartRepository cartRepository;
     private final ModelMapper modelMapper;
 }

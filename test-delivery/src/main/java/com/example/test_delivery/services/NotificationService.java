@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
-    private final INotificationRepository reviewRepository;
+    private final INotificationRepository notificationRepository;
     private final ModelMapper modelMapper;
 }

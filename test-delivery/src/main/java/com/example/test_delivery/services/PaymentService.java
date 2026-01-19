@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class PaymentService {
-    private final IPaymentRepository reviewRepository;
+    private final IPaymentRepository paymentRepository;
     private final ModelMapper modelMapper;
 }
