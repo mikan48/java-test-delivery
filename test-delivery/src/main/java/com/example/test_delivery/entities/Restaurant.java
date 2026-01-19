@@ -20,7 +20,11 @@ public class Restaurant {
     private String adress;
     private Double rating;
 
+    @Enumerated(EnumType.STRING)
     private RestaurantStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private CuisineTypes cuisineType;
 
     @OneToMany
     private List<Dish> dishes;

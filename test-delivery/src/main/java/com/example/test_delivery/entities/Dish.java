@@ -17,8 +17,10 @@ public class Dish {
     private Long id;
 
     private String name;
-
     private Double cost;
+
+    @Enumerated(EnumType.STRING)
+    private DishAvailability dishAvailability;
 
     @ManyToOne
     private Restaurant restaurant;
