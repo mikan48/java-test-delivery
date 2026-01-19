@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDto {
-    private Long id;
     private OrderStatus status;
     private Double totalCost;
+    private Long userId;
+    private Long courierId;
 }

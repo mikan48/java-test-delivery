@@ -38,7 +38,7 @@ public class UserService {
         return modelMapper.map(updatedUser, UserDto.class);
     }
 
-    public List<UserDto> getUsersByRole(String role) {
+    public List<UserDto> getUsersByRole(Roles role) {
         return userRepository.findByRole(role)
                 .stream().map(user -> modelMapper.map(user, UserDto.class))
                 .toList();

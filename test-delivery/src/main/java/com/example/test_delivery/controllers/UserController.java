@@ -35,16 +35,15 @@ public class UserController {
         UserDto updatedUser = userService.updateUser(id, userDto);
         return ResponseEntity.ok(updatedUser);
     }
-
-    //to do
+    
     @GetMapping
     public ResponseEntity<List<UserDto>> getUsersByRole(Roles role) {
-        List<UserDto> users = userService.getUsersByRole(role.name());
+        List<UserDto> users = userService.getUsersByRole(role);
         return ResponseEntity.ok(users);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deactivateUser(Long userId) {
+    public ResponseEntity<Void> deactivateUser(@PathVariable Long userId) {
         userService.deactivateUser(userId);
         return ResponseEntity.noContent().build();
     }

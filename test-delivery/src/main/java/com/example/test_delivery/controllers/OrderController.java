@@ -15,9 +15,10 @@ public class OrderController {
 
 //    @PostMapping
 //    public ResponseEntity<OrderDto> createOrderFromCart() {
-//
+//        OrderDto orderDto = orderService.createOrderFromCart();
+//        return ResponseEntity.ok(orderDto);
 //    }
-//
+
 //    @GetMapping("/{id}")
 //    public ResponseEntity<OrderDto> getOrder() {
 //

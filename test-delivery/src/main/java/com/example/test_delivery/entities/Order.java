@@ -24,6 +24,9 @@ public class Order {
     @ManyToOne
     private Courier courier;
 
+    @ManyToOne
+    private UserEntity user;
+
     @OneToMany
     private List<Dish> dishes;
 }
