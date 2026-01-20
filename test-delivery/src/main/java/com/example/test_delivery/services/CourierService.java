@@ -10,7 +10,9 @@ import com.example.test_delivery.exeptions.ResourceNotFoundException;
 import com.example.test_delivery.repositories.ICourierRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class CourierService {
 
     public List<OrderDto> getActiveCourierOrders(Long courierId) {
         Courier courier = courierRepository.findById(courierId)
-                .orElseThrow(() -> new ResourceNotFoundException("Courier Not found; Courier id: " + courierId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Courier Not found; Courier id: " + courierId));
         ArrayList<Order> activeOrders = new ArrayList<Order>();
 
         for (var order : courier.getOrders()) {
@@ -53,7 +55,7 @@ public class CourierService {
 
     public CourierDto changeCourierStatus(Long courierId, CourierStatus status) {
         Courier courier = courierRepository.findById(courierId)
-                .orElseThrow(() -> new ResourceNotFoundException("Courier Not found; Courier id: " + courierId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Courier Not found; Courier id: " + courierId));
         courier.setStatus(status);
         Courier savedCourier = courierRepository.save(courier);
 

@@ -26,10 +26,10 @@ public class Restaurant {
     @Enumerated(EnumType.STRING)
     private CuisineTypes cuisineType;
 
-    @OneToMany
+    @OneToMany(mappedBy = "restaurant")
     private List<Dish> dishes;
 
-    @OneToMany
+    @OneToMany(mappedBy = "restaurant")
     private List<Review> reviews;
 
     public void setReviews(List<Review> newReviews) {

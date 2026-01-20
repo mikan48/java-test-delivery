@@ -12,7 +12,9 @@ import com.example.test_delivery.repositories.IOrderRepository;
 import com.example.test_delivery.repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,13 +43,13 @@ public class OrderService {
 
     public OrderDto getOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new ResourceNotFoundException("Order Not Found; Order id: " + orderId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order Not Found; Order id: " + orderId));
         return modelMapper.map(order, OrderDto.class);
     }
 
     public List<OrderDto> getUserOrders(Long userId) {
         UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User Not Found; User id: " + userId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found; User id: " + userId));
         List<Order> orders = user.getOrders();
 
         return orders
@@ -57,7 +59,7 @@ public class OrderService {
 
     public OrderDto cancelOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new ResourceNotFoundException("Order Not Found; Order id: " + orderId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order Not Found; Order id: " + orderId));
         order.setStatus(OrderStatus.CANCELLED);
         Order savedOrder = orderRepository.save(order);
 

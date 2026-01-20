@@ -16,4 +16,10 @@ public class Payment {
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
+
+//    @ManyToOne
+//    private UserEntity userEntity;
+
+    @ManyToOne
+    private Order order;
 }

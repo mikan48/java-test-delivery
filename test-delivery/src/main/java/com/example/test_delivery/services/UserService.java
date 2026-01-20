@@ -7,7 +7,9 @@ import com.example.test_delivery.exeptions.ResourceNotFoundException;
 import com.example.test_delivery.repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class UserService {
 
     public UserDto getUserById(Long userId) {
         UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User Not found; User id: " + userId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not found; User id: " + userId));
         return modelMapper.map(user, UserDto.class);
     }
 
@@ -31,7 +33,7 @@ public class UserService {
 
     public UserDto updateUser(Long userId, UserDto userDto) {
         UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User Not found; User id: " + userId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not found; User id: " + userId));
         modelMapper.map(userDto, user);
         UserEntity updatedUser = userRepository.save(user);
 

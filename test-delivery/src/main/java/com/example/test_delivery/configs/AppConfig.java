@@ -1,13 +1,7 @@
 package com.example.test_delivery.configs;
 
-import com.example.test_delivery.dto.CartDto;
-import com.example.test_delivery.dto.DishDto;
-import com.example.test_delivery.dto.OrderDto;
-import com.example.test_delivery.dto.ReviewDto;
-import com.example.test_delivery.entities.Dish;
-import com.example.test_delivery.entities.Order;
-import com.example.test_delivery.entities.Review;
-import com.example.test_delivery.entities.UserCart;
+import com.example.test_delivery.dto.*;
+import com.example.test_delivery.entities.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +34,11 @@ public class AppConfig {
                 .addMappings(mapper -> {
                     mapper.map(src -> src.getUserEntity().getId(), OrderDto::setUserId);
                     mapper.map(src -> src.getCourier().getId(), OrderDto::setCourierId);
+                });
+        modelMapper.typeMap(Payment.class, PaymentDto.class)
+                .addMappings(mapper -> {
+                    //mapper.map(src -> src.getUserEntity().getId(), PaymentDto::setUserId);
+                    mapper.map(src -> src.getOrder().getId(), PaymentDto::setOrderId);
                 });
 
         return modelMapper;

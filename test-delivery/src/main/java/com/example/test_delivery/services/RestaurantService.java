@@ -11,7 +11,9 @@ import com.example.test_delivery.repositories.IDishRepository;
 import com.example.test_delivery.repositories.IRestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ public class RestaurantService {
 
     public RestaurantDto getRestaurantById(Long restaurantId) {
         Restaurant newRestaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new ResourceNotFoundException("Restaurant Not Found; Restaurant id: " + restaurantId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant Not Found; Restaurant id: " + restaurantId));
         Restaurant savedRestaurant = restaurantRepository.save(newRestaurant);
         return modelMapper.map(savedRestaurant, RestaurantDto.class);
     }
@@ -53,7 +55,7 @@ public class RestaurantService {
 
     public RestaurantDto updateRestaurant(Long restaurantId, RestaurantDto restaurantDto) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new ResourceNotFoundException("Restaurant Not Found; Restaurant id: " + restaurantId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant Not Found; Restaurant id: " + restaurantId));
         modelMapper.map(restaurantDto, restaurant);
         Restaurant updatedRestaurant = restaurantRepository.save(restaurant);
 
@@ -62,7 +64,7 @@ public class RestaurantService {
 
     public RestaurantDto closeRestaurant(Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new ResourceNotFoundException("Restaurant Not Found; Restaurant id: " + restaurantId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant Not Found; Restaurant id: " + restaurantId));
         restaurant.setStatus(RestaurantStatus.CLOSED);
         restaurantRepository.save(restaurant);
 
@@ -72,7 +74,7 @@ public class RestaurantService {
     public DishDto addDishToMenu(Long restaurantId, DishDto dishDto) {
         Dish dish = modelMapper.map(dishDto, Dish.class);
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new ResourceNotFoundException("Restaurant Not Found; Restaurant id: " + restaurantId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant Not Found; Restaurant id: " + restaurantId));
         dish.setRestaurant(restaurant);
         Dish savedDish = dishRepository.save(dish);
 
@@ -85,7 +87,7 @@ public class RestaurantService {
 
     public List<DishDto> getRestaurantMenu(Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new ResourceNotFoundException("Restaurant Not Found; Restaurant id: " + restaurantId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant Not Found; Restaurant id: " + restaurantId));
 
         return restaurant.getDishes()
                 .stream().map(dish -> modelMapper.map(dish, DishDto.class))

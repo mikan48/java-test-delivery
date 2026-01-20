@@ -10,7 +10,9 @@ import com.example.test_delivery.repositories.IReviewRepository;
 import com.example.test_delivery.repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -26,9 +28,9 @@ public class ReviewService {
         Review newReview = modelMapper.map(reviewDto, Review.class);
 
         UserEntity user = userRepository.findById(reviewDto.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User Not Found; User id: " + reviewDto.getUserId()));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found; User id: " + reviewDto.getUserId()));
         Restaurant restaurant = restaurantRepository.findById(reviewDto.getRestaurantId())
-                .orElseThrow(() -> new ResourceNotFoundException("Restaurant Not Found; Restaurant id: " + reviewDto.getRestaurantId()));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant Not Found; Restaurant id: " + reviewDto.getRestaurantId()));
 
         newReview.setUser(user);
         newReview.setRestaurant(restaurant);
@@ -53,7 +55,7 @@ public class ReviewService {
 
     public List<ReviewDto> getRestaurantReviews(Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new ResourceNotFoundException("Restaurant Not Found; Restaurant id: " + restaurantId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant Not Found; Restaurant id: " + restaurantId));
 
         return restaurant.getReviews()
                 .stream()
@@ -63,7 +65,7 @@ public class ReviewService {
 
     public ReviewDto updateReview(Long reviewId, ReviewDto reviewDto) {
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new ResourceNotFoundException("Review Not Found; Review id: " + reviewId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Review Not Found; Review id: " + reviewId));
         modelMapper.map(reviewDto, review);
         Review updatedReview = reviewRepository.save(review);
 
@@ -72,7 +74,7 @@ public class ReviewService {
 
     public void deleteReview(Long reviewId) {
         reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new ResourceNotFoundException("Review Not Found; Review id: " + reviewId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Review Not Found; Review id: " + reviewId));
         userRepository.deleteById(reviewId);
     }
 }

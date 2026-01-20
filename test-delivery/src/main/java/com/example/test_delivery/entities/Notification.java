@@ -19,6 +19,9 @@ public class Notification {
 
     private String text;
 
+    @Enumerated(EnumType.STRING)
+    private NotificationStatus status;
+
     @ManyToMany
     private List<UserEntity> userEntities;
 }

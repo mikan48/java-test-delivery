@@ -16,6 +16,7 @@ public class UserCart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double totalCost;
+
     @OneToOne
     private UserEntity user;
 

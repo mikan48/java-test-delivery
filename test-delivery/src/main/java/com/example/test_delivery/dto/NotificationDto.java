@@ -1,5 +1,6 @@
 package com.example.test_delivery.dto;
 
+import com.example.test_delivery.entities.NotificationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,5 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NotificationDto {
-    private Long id;
+    private String text;
+    private NotificationStatus status;
 }

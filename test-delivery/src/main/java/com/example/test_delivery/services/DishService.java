@@ -9,7 +9,9 @@ import com.example.test_delivery.exeptions.ResourceNotFoundException;
 import com.example.test_delivery.repositories.IDishRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ public class DishService {
 
     public DishDto updateDish(Long dishId, DishDto dishDto) {
         Dish dish = dishRepository.findById(dishId)
-                .orElseThrow(() -> new ResourceNotFoundException("Dish Not Found; Dish id: " + dishId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Dish Not Found; Dish id: " + dishId));
         modelMapper.map(dishDto, dish);
         Dish updatedDish = dishRepository.save(dish);
 
@@ -34,7 +36,7 @@ public class DishService {
 
     public DishDto updateDishAvailability(Long dishId, DishAvailability dishAvailability) {
         Dish dish = dishRepository.findById(dishId)
-                .orElseThrow(() -> new ResourceNotFoundException("Dish Not Found; Dish id: " + dishId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Dish Not Found; Dish id: " + dishId));
         dish.setDishAvailability(dishAvailability);
         dishRepository.save(dish);
 

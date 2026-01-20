@@ -1,10 +1,7 @@
 package com.example.test_delivery.components;
 
 import com.example.test_delivery.entities.*;
-import com.example.test_delivery.repositories.ICourierRepository;
-import com.example.test_delivery.repositories.IRestaurantRepository;
-import com.example.test_delivery.repositories.IReviewRepository;
-import com.example.test_delivery.repositories.IUserRepository;
+import com.example.test_delivery.repositories.*;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +19,12 @@ public class DbInit {
     private ICourierRepository courierRepository;
     @Autowired
     private IReviewRepository reviewRepository;
+    @Autowired
+    private IPaymentRepository paymentRepository;
+    @Autowired
+    private IDishRepository dishRepository;
+    @Autowired
+    private IOrderRepository orderRepository;
 
     @PostConstruct
     private void SeedDb() {
@@ -60,6 +63,14 @@ public class DbInit {
         restaurant1.setAdress("Somwhere 13/1");
         restaurantRepository.save(restaurant1);
 
+        //menu
+        Dish dish = new Dish();
+        dish.setRestaurant(restaurant);
+        dish.setDishAvailability(DishAvailability.AVAILABLE);
+        dish.setCost(30.2);
+        dish.setName("Dish 1.1");
+        dishRepository.save(dish);
+
         //reviews
 //        Review review = new Review();
 //        review.setUser(user);
@@ -80,5 +91,21 @@ public class DbInit {
         courier.setName("Courier N1");
         courier.setStatus(CourierStatus.ONLINE);
         courierRepository.save(courier);
+
+        //orders
+//        Order order = new Order();
+//        order.setUserEntity(user);
+//        var dishes = new ArrayList<Dish>();
+//        dishes.add(dish);
+//        order.setDishes(dishes);
+//        order.setStatus(OrderStatus.CANCELLED);
+//        orderRepository.save(order);
+
+        //payments
+        Payment payment = new Payment();
+        payment.setStatus(PaymentStatus.FAILED);
+        //payment.setUserEntity(user);
+        //payment.setOrder(order);
+        paymentRepository.save(payment);
     }
 }

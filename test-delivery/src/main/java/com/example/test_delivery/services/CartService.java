@@ -10,7 +10,9 @@ import com.example.test_delivery.repositories.IDishRepository;
 import com.example.test_delivery.repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +29,9 @@ public class CartService {
     //to do
     public CartDto addInCart(Long userId, Long dishId) {
         UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User Not found; User id: " + userId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not found; User id: " + userId));
         Dish dish = dishRepository.findById(dishId)
-                .orElseThrow(() -> new ResourceNotFoundException("Dish Not Found; Dish id: " + dishId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Dish Not Found; Dish id: " + dishId));
 
         UserCart cart = cartRepository.findByUserId(userId);
         List<Dish> dishes = cart.getDishes();
@@ -42,9 +44,9 @@ public class CartService {
 
     public CartDto deleteFromCart(Long userId, Long dishId) {
         userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User Not found; User id: " + userId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not found; User id: " + userId));
         dishRepository.findById(dishId)
-                .orElseThrow(() -> new ResourceNotFoundException("Dish Not Found; Dish id: " + dishId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Dish Not Found; Dish id: " + dishId));
 
         UserCart cart = cartRepository.findByUserId(userId);
         List<Dish> dishes = cart.getDishes();
@@ -59,7 +61,7 @@ public class CartService {
 
     public CartDto getUserCart(Long userId) {
         userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User Not found; User id: " + userId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not found; User id: " + userId));
         UserCart cart = cartRepository.findByUserId(userId);
 
         return modelMapper.map(cart, CartDto.class);
@@ -67,7 +69,7 @@ public class CartService {
 
     public void clearCart(Long userId) {
         userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User Not found; User id: " + userId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not found; User id: " + userId));
         UserCart cart = cartRepository.findByUserId(userId);
         cart.setDishes(new ArrayList<>());
         cartRepository.save(cart);

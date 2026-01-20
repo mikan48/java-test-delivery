@@ -21,6 +21,6 @@ public class Courier {
     @Enumerated(EnumType.STRING)
     private CourierStatus status;
 
-    @OneToMany
+    @OneToMany(mappedBy = "courier")
     private List<Order> orders;
 }

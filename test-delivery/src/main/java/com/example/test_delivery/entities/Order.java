@@ -27,6 +27,9 @@ public class Order {
     @ManyToOne
     private UserEntity userEntity;
 
-    @OneToMany
+    @ManyToMany
     private List<Dish> dishes;
+
+    @OneToMany(mappedBy = "order")
+    private List<Payment> payments;
 }

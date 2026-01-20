@@ -34,6 +34,9 @@ public class UserEntity {
     @OneToMany
     private List<Review> reviews;
 
+    @OneToMany
+    private List<Payment> payments;
+
     @OneToOne
     private UserCart cart;
 
