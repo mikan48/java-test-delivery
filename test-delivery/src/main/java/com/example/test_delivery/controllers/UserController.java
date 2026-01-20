@@ -35,7 +35,7 @@ public class UserController {
         UserDto updatedUser = userService.updateUser(id, userDto);
         return ResponseEntity.ok(updatedUser);
     }
-    
+
     @GetMapping
     public ResponseEntity<List<UserDto>> getUsersByRole(Roles role) {
         List<UserDto> users = userService.getUsersByRole(role);

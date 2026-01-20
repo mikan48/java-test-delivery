@@ -36,4 +36,7 @@ public class UserEntity {
 
     @OneToOne
     private UserCart cart;
+
+    @ManyToMany
+    private List<Notification> notifications;
 }

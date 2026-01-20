@@ -38,7 +38,7 @@ public class AppConfig {
                 });
         modelMapper.typeMap(Order.class, OrderDto.class)
                 .addMappings(mapper -> {
-                    mapper.map(src -> src.getUser().getId(), OrderDto::setUserId);
+                    mapper.map(src -> src.getUserEntity().getId(), OrderDto::setUserId);
                     mapper.map(src -> src.getCourier().getId(), OrderDto::setCourierId);
                 });
 
