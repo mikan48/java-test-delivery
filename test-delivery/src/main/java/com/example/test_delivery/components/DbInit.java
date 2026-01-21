@@ -25,6 +25,8 @@ public class DbInit {
     private IDishRepository dishRepository;
     @Autowired
     private IOrderRepository orderRepository;
+    @Autowired
+    private ICartRepository cartRepository;
 
     @PostConstruct
     private void SeedDb() {
@@ -67,24 +69,47 @@ public class DbInit {
         Dish dish = new Dish();
         dish.setRestaurant(restaurant);
         dish.setDishAvailability(DishAvailability.AVAILABLE);
-        dish.setCost(30.2);
+        dish.setCost(300.2);
         dish.setName("Dish 1.1");
         dishRepository.save(dish);
 
+        Dish dish1 = new Dish();
+        dish1.setRestaurant(restaurant);
+        dish1.setDishAvailability(DishAvailability.AVAILABLE);
+        dish1.setCost(140.82);
+        dish1.setName("Dish 1.2");
+        dishRepository.save(dish1);
+
         //reviews
-//        Review review = new Review();
-//        review.setUser(user);
-//        review.setRestaurant(restaurant);
-//        review.setText("Terrible");
-//        review.setRating(1);
-//        reviewRepository.save(review);
-//
-//        Review review1 = new Review();
-//        review1.setUser(user1);
-//        review1.setRestaurant(restaurant);
-//        review1.setText("So-so");
-//        review1.setRating(3);
-//        reviewRepository.save(review1);
+        Review review = new Review();
+        review.setUser(user);
+        review.setRestaurant(restaurant);
+        review.setText("Terrible");
+        review.setRating(1);
+        reviewRepository.save(review);
+
+        List<Review> reviews = new ArrayList<>();
+        reviews.add(review);
+        user.setReviews(reviews);
+        userRepository.save(user);
+
+        Review review1 = new Review();
+        review1.setUser(user1);
+        review1.setRestaurant(restaurant);
+        review1.setText("So-so");
+        review1.setRating(3);
+        reviewRepository.save(review1);
+
+        List<Review> reviews1 = new ArrayList<>();
+        reviews1.add(review1);
+        user1.setReviews(reviews1);
+        userRepository.save(user1);
+
+        List<Review> RestaurantReviews = new ArrayList<>();
+        RestaurantReviews.add(review);
+        RestaurantReviews.add(review1);
+        restaurant.setReviews(RestaurantReviews);
+        restaurantRepository.save(restaurant);
 
         //couriers
         Courier courier = new Courier();
@@ -92,20 +117,43 @@ public class DbInit {
         courier.setStatus(CourierStatus.ONLINE);
         courierRepository.save(courier);
 
-        //orders
-//        Order order = new Order();
-//        order.setUserEntity(user);
-//        var dishes = new ArrayList<Dish>();
-//        dishes.add(dish);
-//        order.setDishes(dishes);
-//        order.setStatus(OrderStatus.CANCELLED);
-//        orderRepository.save(order);
+        //userOrders
+        UserOrder userOrder = new UserOrder();
+        userOrder.setUserEntity(user);
+        var dishes = new ArrayList<Dish>();
+        dishes.add(dish);
+        userOrder.setDishes(dishes);
+        userOrder.setStatus(OrderStatus.CANCELLED);
+
+        List<UserOrder> orders = new ArrayList<>();
+        orders.add(userOrder);
+        user.setUserOrders(orders);
+
+        orderRepository.save(userOrder);
+        userRepository.save(user);
 
         //payments
         Payment payment = new Payment();
         payment.setStatus(PaymentStatus.FAILED);
-        //payment.setUserEntity(user);
-        //payment.setOrder(order);
+        payment.setUserOrder(userOrder);
+        payment.setUserEntity(user);
+
+        List<Payment> payments = new ArrayList<>();
+        payments.add(payment);
+        userOrder.setPayments(payments);
+
         paymentRepository.save(payment);
+        userRepository.save(user);
+        orderRepository.save(userOrder);
+
+        //userCart
+        UserCart cart = new UserCart();
+        cart.setUser(user1);
+        dishes.add(dish1);
+        cart.setDishes(dishes);
+        cartRepository.save(cart);
+
+        user1.setCart(cart);
+        userRepository.save(user1);
     }
 }

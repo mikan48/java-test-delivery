@@ -20,7 +20,7 @@ public class UserCart {
     @OneToOne
     private UserEntity user;
 
-    @OneToMany
+    @ManyToMany
     private List<Dish> dishes;
 
     public void setDishes(List<Dish> newDishes) {

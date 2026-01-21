@@ -16,11 +16,11 @@ public class Courier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String Name;
+    private String name;
 
     @Enumerated(EnumType.STRING)
     private CourierStatus status;
 
     @OneToMany(mappedBy = "courier")
-    private List<Order> orders;
+    private List<UserOrder> userOrders;
 }

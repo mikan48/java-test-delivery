@@ -35,9 +35,12 @@ public class CourierController {
 //
 //    }
 
-    @GetMapping("/{id}/orders")
+    @GetMapping("/{id}/userOrders")
     public ResponseEntity<List<OrderDto>> activeCourierOrders(@PathVariable Long id) {
         List<OrderDto> orders = courierService.getActiveCourierOrders(id);
+        if (orders.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(orders);
     }
 

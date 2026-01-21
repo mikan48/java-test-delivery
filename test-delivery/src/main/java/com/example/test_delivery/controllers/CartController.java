@@ -23,8 +23,8 @@ public class CartController {
     }
 
     @DeleteMapping("/items/{id}")
-    public ResponseEntity<CartDto> deleteFromCart(@PathVariable Long dishId, Long userId) {
-        CartDto updatedCart = cartService.deleteFromCart(userId, dishId);
+    public ResponseEntity<CartDto> deleteFromCart(@PathVariable Long id, Long dishId) {
+        CartDto updatedCart = cartService.deleteFromCart(id, dishId);
         return ResponseEntity.ok(updatedCart);
     }
 

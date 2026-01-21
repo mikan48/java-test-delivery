@@ -3,7 +3,6 @@ package com.example.test_delivery.services;
 import com.example.test_delivery.dto.NotificationDto;
 import com.example.test_delivery.entities.Notification;
 import com.example.test_delivery.entities.NotificationStatus;
-import com.example.test_delivery.exeptions.ResourceNotFoundException;
 import com.example.test_delivery.repositories.INotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

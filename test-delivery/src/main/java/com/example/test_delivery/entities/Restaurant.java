@@ -26,7 +26,7 @@ public class Restaurant {
     @Enumerated(EnumType.STRING)
     private CuisineTypes cuisineType;
 
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
     private List<Dish> dishes;
 
     @OneToMany(mappedBy = "restaurant")

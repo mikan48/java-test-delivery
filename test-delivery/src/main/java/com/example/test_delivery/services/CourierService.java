@@ -4,9 +4,8 @@ import com.example.test_delivery.dto.CourierDto;
 import com.example.test_delivery.dto.OrderDto;
 import com.example.test_delivery.entities.Courier;
 import com.example.test_delivery.entities.CourierStatus;
-import com.example.test_delivery.entities.Order;
+import com.example.test_delivery.entities.UserOrder;
 import com.example.test_delivery.entities.OrderStatus;
-import com.example.test_delivery.exeptions.ResourceNotFoundException;
 import com.example.test_delivery.repositories.ICourierRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,9 +38,13 @@ public class CourierService {
     public List<OrderDto> getActiveCourierOrders(Long courierId) {
         Courier courier = courierRepository.findById(courierId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Courier Not found; Courier id: " + courierId));
-        ArrayList<Order> activeOrders = new ArrayList<Order>();
+        ArrayList<UserOrder> activeOrders = new ArrayList<UserOrder>();
 
-        for (var order : courier.getOrders()) {
+        if (courier.getUserOrders().isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        for (var order : courier.getUserOrders()) {
             if (order.getStatus() == OrderStatus.ACTIVE) {
                 activeOrders.add(order);
             }

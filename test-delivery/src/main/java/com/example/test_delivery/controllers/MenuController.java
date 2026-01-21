@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.*;
 public class MenuController {
     private final DishService dishService;
 
-    @PutMapping("/menu/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<DishDto> updateDish(@PathVariable Long id, @RequestBody DishDto dishDto) {
         DishDto updatedDish = dishService.updateDish(id, dishDto);
         return ResponseEntity.ok(updatedDish);
     }
 
-    @DeleteMapping("/menu/{id}")
-    public ResponseEntity<DishDto> deleteDish(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDish(@PathVariable Long id) {
         dishService.deleteDish(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/menu/{id}/availability")
+    @PatchMapping("/{id}/availability")
     public ResponseEntity<DishDto> updateDishAvailability(@PathVariable Long id, DishAvailability dishAvailability) {
         DishDto updatedDish = dishService.updateDishAvailability(id, dishAvailability);
         return ResponseEntity.ok(updatedDish);

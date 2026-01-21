@@ -3,6 +3,7 @@ package com.example.test_delivery.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -11,7 +12,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order {
+public class UserOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,9 +28,11 @@ public class Order {
     @ManyToOne
     private UserEntity userEntity;
 
+    @Builder.Default
     @ManyToMany
-    private List<Dish> dishes;
+    private List<Dish> dishes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "order")
-    private List<Payment> payments;
+    @Builder.Default
+    @OneToMany(mappedBy = "userOrder")
+    private List<Payment> payments = new ArrayList<>();
 }

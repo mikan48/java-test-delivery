@@ -43,8 +43,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deactivateUser(@PathVariable Long userId) {
-        userService.deactivateUser(userId);
+    public ResponseEntity<Void> deactivateUser(@PathVariable Long id) {
+        userService.deactivateUser(id);
         return ResponseEntity.noContent().build();
     }
 

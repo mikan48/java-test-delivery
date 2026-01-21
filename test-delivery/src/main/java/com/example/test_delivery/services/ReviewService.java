@@ -4,7 +4,6 @@ import com.example.test_delivery.dto.ReviewDto;
 import com.example.test_delivery.entities.Restaurant;
 import com.example.test_delivery.entities.Review;
 import com.example.test_delivery.entities.UserEntity;
-import com.example.test_delivery.exeptions.ResourceNotFoundException;
 import com.example.test_delivery.repositories.IRestaurantRepository;
 import com.example.test_delivery.repositories.IReviewRepository;
 import com.example.test_delivery.repositories.IUserRepository;

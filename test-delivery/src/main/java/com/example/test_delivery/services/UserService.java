@@ -3,7 +3,7 @@ package com.example.test_delivery.services;
 import com.example.test_delivery.dto.UserDto;
 import com.example.test_delivery.entities.Roles;
 import com.example.test_delivery.entities.UserEntity;
-import com.example.test_delivery.exeptions.ResourceNotFoundException;
+import com.example.test_delivery.entities.UserStatus;
 import com.example.test_delivery.repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -46,8 +46,11 @@ public class UserService {
                 .toList();
     }
 
-    //maybe not delete, but change status to smth like "deactivated" later
+
     public void deactivateUser(Long userId) {
-        userRepository.deleteById(userId);
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not found; User id: " + userId));
+        user.setStatus(UserStatus.DISABLED);
+        userRepository.save(user);
     }
 }

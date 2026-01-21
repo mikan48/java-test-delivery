@@ -6,7 +6,6 @@ import com.example.test_delivery.entities.CuisineTypes;
 import com.example.test_delivery.entities.Dish;
 import com.example.test_delivery.entities.Restaurant;
 import com.example.test_delivery.entities.RestaurantStatus;
-import com.example.test_delivery.exeptions.ResourceNotFoundException;
 import com.example.test_delivery.repositories.IDishRepository;
 import com.example.test_delivery.repositories.IRestaurantRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourierDto {
-    private Long id;
-    private String Name;
+    private String name;
     private CourierStatus status;
 }

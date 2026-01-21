@@ -1,11 +1,10 @@
 package com.example.test_delivery.services;
 
 import com.example.test_delivery.dto.PaymentDto;
-import com.example.test_delivery.entities.Order;
+import com.example.test_delivery.entities.UserEntity;
+import com.example.test_delivery.entities.UserOrder;
 import com.example.test_delivery.entities.Payment;
 import com.example.test_delivery.entities.PaymentStatus;
-import com.example.test_delivery.entities.UserEntity;
-import com.example.test_delivery.exeptions.ResourceNotFoundException;
 import com.example.test_delivery.repositories.IOrderRepository;
 import com.example.test_delivery.repositories.IPaymentRepository;
 import com.example.test_delivery.repositories.IUserRepository;
@@ -15,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,24 +27,24 @@ public class PaymentService {
 
     public PaymentDto addPayment(PaymentDto paymentDto) {
         Payment payment = modelMapper.map(paymentDto, Payment.class);
-//        UserEntity user = userRepository.findById(paymentDto.getUserId())
-//                .orElseThrow(() -> new ResourceNotFoundException("User Not Found; User id: " + paymentDto.getUserId()));
-        Order order = orderRepository.findById(paymentDto.getOrderId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order Not Found; Order id: " + paymentDto.getOrderId()));
+        UserEntity user = userRepository.findById(paymentDto.getUserId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found; User id: " + paymentDto.getUserId()));
+        UserOrder userOrder = orderRepository.findById(paymentDto.getOrderId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "UserOrder Not Found; UserOrder id: " + paymentDto.getOrderId()));
 
-        //payment.setUserEntity(user);
-        payment.setOrder(order);
+        payment.setUserEntity(user);
+        payment.setUserOrder(userOrder);
         Payment newPayment = paymentRepository.save(payment);
 
-//        List<Payment> userPayments = user.getPayments();
-//        userPayments.add(payment);
-//        user.setPayments(userPayments);
-//        userRepository.save(user);
+        List<Payment> userPayments = new ArrayList<>(user.getPayments());
+        userPayments.add(payment);
+        user.setPayments(userPayments);
+        userRepository.save(user);
 
-        List<Payment> orderPayments = order.getPayments();
+        List<Payment> orderPayments = new ArrayList<>(userOrder.getPayments());
         orderPayments.add(payment);
-        order.setPayments(orderPayments);
-        orderRepository.save(order);
+        userOrder.setPayments(orderPayments);
+        orderRepository.save(userOrder);
 
         return modelMapper.map(newPayment, PaymentDto.class);
     }
@@ -65,10 +65,10 @@ public class PaymentService {
     }
 
     public List<PaymentDto> orderPayments(Long orderId) {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order Not Found; Order id: " + orderId));
+        UserOrder userOrder = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "UserOrder Not Found; UserOrder id: " + orderId));
 
-        return order.getPayments()
+        return userOrder.getPayments()
                 .stream().map(payment -> modelMapper.map(payment, PaymentDto.class))
                 .toList();
     }

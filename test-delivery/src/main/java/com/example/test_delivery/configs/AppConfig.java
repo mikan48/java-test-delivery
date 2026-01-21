@@ -30,15 +30,15 @@ public class AppConfig {
                 .addMappings(mapper -> {
                     mapper.map(src -> src.getUser().getId(), CartDto::setUserId);
                 });
-        modelMapper.typeMap(Order.class, OrderDto.class)
+        modelMapper.typeMap(UserOrder.class, OrderDto.class)
                 .addMappings(mapper -> {
                     mapper.map(src -> src.getUserEntity().getId(), OrderDto::setUserId);
                     mapper.map(src -> src.getCourier().getId(), OrderDto::setCourierId);
                 });
         modelMapper.typeMap(Payment.class, PaymentDto.class)
                 .addMappings(mapper -> {
-                    //mapper.map(src -> src.getUserEntity().getId(), PaymentDto::setUserId);
-                    mapper.map(src -> src.getOrder().getId(), PaymentDto::setOrderId);
+                    mapper.map(src -> src.getUserEntity().getId(), PaymentDto::setUserId);
+                    mapper.map(src -> src.getUserOrder().getId(), PaymentDto::setOrderId);
                 });
 
         return modelMapper;

@@ -3,6 +3,7 @@ package com.example.test_delivery.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -22,9 +23,12 @@ public class Dish {
     @Enumerated(EnumType.STRING)
     private DishAvailability dishAvailability;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Restaurant restaurant;
 
     @ManyToMany
-    private List<Order> orders;
+    private List<UserOrder> userOrders;
+
+    @ManyToMany
+    private List<UserCart> cart;
 }

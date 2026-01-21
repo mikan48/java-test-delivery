@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class OrderDto {
     private OrderStatus status;
     private Double totalCost;
+    private List<DishDto> dishes;
     private Long userId;
     private Long courierId;
 }
