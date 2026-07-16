@@ -17,6 +17,11 @@ Swagger/OpenAPI
 mvn spring-boot:run
 ```
 
+## Через Docker
+```
+docker-compose up
+```
+
 ## Swagger
 
 После запуска приложения документация АРІ доступна по адресу:
