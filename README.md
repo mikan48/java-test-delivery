@@ -12,6 +12,11 @@ Spring Boot (Web, Validation, Data JPA)
 
 Swagger/OpenAPI
 
+## Запуск приложения
+```
+mvn spring-boot:run
+```
+
 ## Swagger
 
 После запуска приложения документация АРІ доступна по адресу:
