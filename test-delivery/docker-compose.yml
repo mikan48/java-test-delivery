@@ -4,13 +4,30 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-
-    container_name: spring-boot-app
-    
+    container_name: delivery-spring-app
     ports:
       - "8080:8080"
-
+    depends_on:
+      - postgres
     environment:
-      SPRING_PROFILES_ACTIVE: docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/delivery
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: delivery
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+    - "5432:5432"
 
     restart: unless-stopped
+
+volumes:
+  postgres_data:

@@ -1,0 +1,1945 @@
+openapi: 3.1.0
+info:
+  title: REST API сервис для доставки еды
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /users/{id}:
+    get:
+      summary: Профиль пользователя
+      tags:
+      - User Controller
+      operationId: getUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    enum:
+                    - USER
+                    - ADMIN
+                  name:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - ACTIVE
+                    - DISABLED
+        "404":
+          description: User Not found
+        "500":
+          description: Internal Server Error
+    put:
+      summary: Обновление профиля пользователя
+      tags:
+      - User Controller
+      operationId: updateUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  enum:
+                  - USER
+                  - ADMIN
+                name:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                  - ACTIVE
+                  - DISABLED
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    enum:
+                    - USER
+                    - ADMIN
+                  name:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - ACTIVE
+                    - DISABLED
+        "404":
+          description: User Not found
+        "500":
+          description: Internal Server Error
+    delete:
+      summary: Деактивация профиля пользователя
+      tags:
+      - User Controller
+      operationId: deactivateUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: User Not found
+        "500":
+          description: Internal Server Error
+  /users:
+    get:
+      summary: Список пользователей указанной роли
+      tags:
+      - User Controller
+      operationId: getUsersByRole
+      parameters:
+      - name: role
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - USER
+          - ADMIN
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    role:
+                      type: string
+                      enum:
+                      - USER
+                      - ADMIN
+                    name:
+                      type: string
+                    status:
+                      type: string
+                      enum:
+                      - ACTIVE
+                      - DISABLED
+        "404":
+          description: User Not found
+        "500":
+          description: Internal Server Error
+    post:
+      summary: Регистрация пользователя
+      tags:
+      - User Controller
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  enum:
+                  - USER
+                  - ADMIN
+                name:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                  - ACTIVE
+                  - DISABLED
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    enum:
+                    - USER
+                    - ADMIN
+                  name:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - ACTIVE
+                    - DISABLED
+        "404":
+          description: User Not found
+        "500":
+          description: Internal Server Error
+  /reviews/{id}:
+    put:
+      summary: Обновить отзыв
+      tags:
+      - Review Controller
+      operationId: updateReview
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rating:
+                  type: integer
+                  format: int32
+                  maximum: 5
+                  minimum: 1
+                text:
+                  type: string
+                userId:
+                  type: integer
+                  format: int64
+                restaurantId:
+                  type: integer
+                  format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  rating:
+                    type: integer
+                    format: int32
+                    maximum: 5
+                    minimum: 1
+                  text:
+                    type: string
+                  userId:
+                    type: integer
+                    format: int64
+                  restaurantId:
+                    type: integer
+                    format: int64
+        "404":
+          description: Review Not found
+        "500":
+          description: Internal Server Error
+    delete:
+      summary: Удалить отзыв
+      tags:
+      - Review Controller
+      operationId: deleteReview
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Review Not found
+        "500":
+          description: Internal Server Error
+  /reviews:
+    get:
+      summary: Отзыв о ресторане
+      tags:
+      - Review Controller
+      operationId: restaurantReviews
+      parameters:
+      - name: restaurantId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    rating:
+                      type: integer
+                      format: int32
+                      maximum: 5
+                      minimum: 1
+                    text:
+                      type: string
+                    userId:
+                      type: integer
+                      format: int64
+                    restaurantId:
+                      type: integer
+                      format: int64
+        "404":
+          description: Review Not found / Restaurant Not found
+        "500":
+          description: Internal Server Error
+    post:
+      summary: Добавить отзыв о ресторане
+      tags:
+      - Review Controller
+      operationId: addReview
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rating:
+                  type: integer
+                  format: int32
+                  maximum: 5
+                  minimum: 1
+                text:
+                  type: string
+                userId:
+                  type: integer
+                  format: int64
+                restaurantId:
+                  type: integer
+                  format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  rating:
+                    type: integer
+                    format: int32
+                    maximum: 5
+                    minimum: 1
+                  text:
+                    type: string
+                  userId:
+                    type: integer
+                    format: int64
+                  restaurantId:
+                    type: integer
+                    format: int64
+        "404":
+          description: Review Not found / Restaurant Not found
+        "500":
+          description: Internal Server Error
+  /restaurants/{id}:
+    get:
+      summary: Детали ресторана
+      tags:
+      - Restaurant Controller
+      operationId: getRestaurant
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  adress:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - OPEN
+                    - CLOSED
+                  cuisineType:
+                    type: string
+                    enum:
+                    - ASIAN
+                    - PIZZA
+                    - BURGERS
+                    - SUSHI
+                    - PASTA
+                  rating:
+                    type: number
+                    format: double
+        "404":
+          description: Restaurant Not found
+        "500":
+          description: Internal Server Error
+    put:
+      summary: Обновить ресторан
+      tags:
+      - Restaurant Controller
+      operationId: updateRestaurant
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                adress:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                  - OPEN
+                  - CLOSED
+                cuisineType:
+                  type: string
+                  enum:
+                  - ASIAN
+                  - PIZZA
+                  - BURGERS
+                  - SUSHI
+                  - PASTA
+                rating:
+                  type: number
+                  format: double
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  adress:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - OPEN
+                    - CLOSED
+                  cuisineType:
+                    type: string
+                    enum:
+                    - ASIAN
+                    - PIZZA
+                    - BURGERS
+                    - SUSHI
+                    - PASTA
+                  rating:
+                    type: number
+                    format: double
+        "404":
+          description: Restaurant Not found
+        "500":
+          description: Internal Server Error
+    delete:
+      summary: Закрыть ресторан
+      tags:
+      - Restaurant Controller
+      operationId: closeRestaurant
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  adress:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - OPEN
+                    - CLOSED
+                  cuisineType:
+                    type: string
+                    enum:
+                    - ASIAN
+                    - PIZZA
+                    - BURGERS
+                    - SUSHI
+                    - PASTA
+                  rating:
+                    type: number
+                    format: double
+        "404":
+          description: Restaurant Not found
+        "500":
+          description: Internal Server Error
+  /restaurants:
+    get:
+      summary: Cписок ресторанов с фильтром по кухне
+      tags:
+      - Restaurant Controller
+      operationId: getRestaurants
+      parameters:
+      - name: cuisineType
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - ASIAN
+          - PIZZA
+          - BURGERS
+          - SUSHI
+          - PASTA
+      - name: restaurantRating
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    adress:
+                      type: string
+                    status:
+                      type: string
+                      enum:
+                      - OPEN
+                      - CLOSED
+                    cuisineType:
+                      type: string
+                      enum:
+                      - ASIAN
+                      - PIZZA
+                      - BURGERS
+                      - SUSHI
+                      - PASTA
+                    rating:
+                      type: number
+                      format: double
+        "404":
+          description: Restaurant Not found
+        "500":
+          description: Internal Server Error
+    post:
+      summary: Добавить ресторан
+      tags:
+      - Restaurant Controller
+      operationId: addRestaurant
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                adress:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                  - OPEN
+                  - CLOSED
+                cuisineType:
+                  type: string
+                  enum:
+                  - ASIAN
+                  - PIZZA
+                  - BURGERS
+                  - SUSHI
+                  - PASTA
+                rating:
+                  type: number
+                  format: double
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  adress:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - OPEN
+                    - CLOSED
+                  cuisineType:
+                    type: string
+                    enum:
+                    - ASIAN
+                    - PIZZA
+                    - BURGERS
+                    - SUSHI
+                    - PASTA
+                  rating:
+                    type: number
+                    format: double
+        "404":
+          description: Restaurant Not found
+        "500":
+          description: Internal Server Error
+  /restaurants/{id}/menu:
+    get:
+      summary: Меню ресторана
+      tags:
+      - Restaurant Controller
+      operationId: getRestaurantMenu
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    cost:
+                      type: number
+                      format: double
+                    dishAvailability:
+                      type: string
+                      enum:
+                      - AVAILABLE
+                      - NOT_AVAILABLE
+                    restaurantId:
+                      type: integer
+                      format: int64
+        "404":
+          description: Restaurant Not found
+        "500":
+          description: Internal Server Error
+    post:
+      summary: Добавить блюдо в меню
+      tags:
+      - Restaurant Controller
+      operationId: addDishToMenu
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                cost:
+                  type: number
+                  format: double
+                dishAvailability:
+                  type: string
+                  enum:
+                  - AVAILABLE
+                  - NOT_AVAILABLE
+                restaurantId:
+                  type: integer
+                  format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  cost:
+                    type: number
+                    format: double
+                  dishAvailability:
+                    type: string
+                    enum:
+                    - AVAILABLE
+                    - NOT_AVAILABLE
+                  restaurantId:
+                    type: integer
+                    format: int64
+        "404":
+          description: Restaurant Not found / Dish Not found
+        "500":
+          description: Internal Server Error
+  /menu/{id}:
+    put:
+      summary: Обновить блюдо
+      tags:
+      - Menu Controller
+      operationId: updateDish
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                cost:
+                  type: number
+                  format: double
+                dishAvailability:
+                  type: string
+                  enum:
+                  - AVAILABLE
+                  - NOT_AVAILABLE
+                restaurantId:
+                  type: integer
+                  format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  cost:
+                    type: number
+                    format: double
+                  dishAvailability:
+                    type: string
+                    enum:
+                    - AVAILABLE
+                    - NOT_AVAILABLE
+                  restaurantId:
+                    type: integer
+                    format: int64
+        "404":
+          description: Dish Not found
+        "500":
+          description: Internal Server Error
+    delete:
+      summary: Удалить блюдо
+      tags:
+      - Menu Controller
+      operationId: deleteDish
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Dish Not found
+        "500":
+          description: Internal Server Error
+    /menu/{id}/availability: ""
+    patch:
+      summary: Изменить доступность блюда
+      tags:
+      - Menu Controller
+      operationId: updateDishAvailability
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: dishAvailability
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - AVAILABLE
+          - NOT_AVAILABLE
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  cost:
+                    type: number
+                    format: double
+                  dishAvailability:
+                    type: string
+                    enum:
+                    - AVAILABLE
+                    - NOT_AVAILABLE
+                  restaurantId:
+                    type: integer
+                    format: int64
+        "404":
+          description: Dish Not found
+        "500":
+          description: Internal Server Error
+  /userOrders:
+    get:
+      summary: Заказы пользователя
+      tags:
+      - Order Controller
+      operationId: getUserOrders
+      parameters:
+      - name: userId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      enum:
+                      - NOT_PAYED
+                      - CONFIRMED
+                      - IN_PROGRESS
+                      - READY
+                      - ACTIVE
+                      - DELIVERED
+                      - CANCELLED
+                    totalCost:
+                      type: number
+                      format: double
+                    dishes:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          cost:
+                            type: number
+                            format: double
+                          dishAvailability:
+                            type: string
+                            enum:
+                            - AVAILABLE
+                            - NOT_AVAILABLE
+                          restaurantId:
+                            type: integer
+                            format: int64
+                    userId:
+                      type: integer
+                      format: int64
+                    courierId:
+                      type: integer
+                      format: int64
+        "404":
+          description: Order Not found
+        "500":
+          description: Internal Server Error
+    post:
+      summary: Создать заказ из корзины
+      tags:
+      - Order Controller
+      operationId: createOrderFromCart
+      parameters:
+      - name: userId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - NOT_PAYED
+                    - CONFIRMED
+                    - IN_PROGRESS
+                    - READY
+                    - ACTIVE
+                    - DELIVERED
+                    - CANCELLED
+                  totalCost:
+                    type: number
+                    format: double
+                  dishes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        cost:
+                          type: number
+                          format: double
+                        dishAvailability:
+                          type: string
+                          enum:
+                          - AVAILABLE
+                          - NOT_AVAILABLE
+                        restaurantId:
+                          type: integer
+                          format: int64
+                  userId:
+                    type: integer
+                    format: int64
+                  courierId:
+                    type: integer
+                    format: int64
+        "404":
+          description: Order Not found
+        "500":
+          description: Internal Server Error
+  /userOrders/{id}:
+    get:
+      summary: Получить заказ
+      tags:
+      - Order Controller
+      operationId: getOrder
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - NOT_PAYED
+                    - CONFIRMED
+                    - IN_PROGRESS
+                    - READY
+                    - ACTIVE
+                    - DELIVERED
+                    - CANCELLED
+                  totalCost:
+                    type: number
+                    format: double
+                  dishes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        cost:
+                          type: number
+                          format: double
+                        dishAvailability:
+                          type: string
+                          enum:
+                          - AVAILABLE
+                          - NOT_AVAILABLE
+                        restaurantId:
+                          type: integer
+                          format: int64
+                  userId:
+                    type: integer
+                    format: int64
+                  courierId:
+                    type: integer
+                    format: int64
+        "404":
+          description: Order Not found
+        "500":
+          description: Internal Server Error
+    delete:
+      summary: Удалить заказ
+      tags:
+      - Order Controller
+      operationId: cancelOrder
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - NOT_PAYED
+                    - CONFIRMED
+                    - IN_PROGRESS
+                    - READY
+                    - ACTIVE
+                    - DELIVERED
+                    - CANCELLED
+                  totalCost:
+                    type: number
+                    format: double
+                  dishes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        cost:
+                          type: number
+                          format: double
+                        dishAvailability:
+                          type: string
+                          enum:
+                          - AVAILABLE
+                          - NOT_AVAILABLE
+                        restaurantId:
+                          type: integer
+                          format: int64
+                  userId:
+                    type: integer
+                    format: int64
+                  courierId:
+                    type: integer
+                    format: int64
+        "404":
+          description: Order Not found
+        "500":
+          description: Internal Server Error
+  /userOrders/filtered:
+    get:
+      summary: Список отфильтрованных заказов по статусу
+      tags:
+      - Order Controller
+      operationId: filterOrdersByStatus
+      parameters:
+      - name: orderStatus
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - NOT_PAYED
+          - CONFIRMED
+          - IN_PROGRESS
+          - READY
+          - ACTIVE
+          - DELIVERED
+          - CANCELLED
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      enum:
+                      - NOT_PAYED
+                      - CONFIRMED
+                      - IN_PROGRESS
+                      - READY
+                      - ACTIVE
+                      - DELIVERED
+                      - CANCELLED
+                    totalCost:
+                      type: number
+                      format: double
+                    dishes:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          cost:
+                            type: number
+                            format: double
+                          dishAvailability:
+                            type: string
+                            enum:
+                            - AVAILABLE
+                            - NOT_AVAILABLE
+                          restaurantId:
+                            type: integer
+                            format: int64
+                    userId:
+                      type: integer
+                      format: int64
+                    courierId:
+                      type: integer
+                      format: int64
+        "500":
+          description: Internal Server Error
+  /payments:
+    get:
+      summary: Платежи по заказу
+      tags:
+      - Payment Controller
+      operationId: orderPayments
+      parameters:
+      - name: orderId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      enum:
+                      - SUCCEEDED
+                      - FAILED
+                    userId:
+                      type: integer
+                      format: int64
+                    orderId:
+                      type: integer
+                      format: int64
+        "404":
+          description: Payment Not found
+        "500":
+          description: Internal Server Error
+    post:
+      summary: Создать платеж
+      tags:
+      - Payment Controller
+      operationId: addPayment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - SUCCEEDED
+                  - FAILED
+                userId:
+                  type: integer
+                  format: int64
+                orderId:
+                  type: integer
+                  format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - SUCCEEDED
+                    - FAILED
+                  userId:
+                    type: integer
+                    format: int64
+                  orderId:
+                    type: integer
+                    format: int64
+        "500":
+          description: Internal Server Error
+  /payments/{id}/status:
+    patch:
+      summary: Обновить статус платежа
+      tags:
+      - Payment Controller
+      operationId: updatePaymentStatus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: paymentStatus
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - SUCCEEDED
+          - FAILED
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - SUCCEEDED
+                    - FAILED
+                  userId:
+                    type: integer
+                    format: int64
+                  orderId:
+                    type: integer
+                    format: int64
+        "404":
+          description: Payment Not found
+        "500":
+          description: Internal Server Error
+  /payments/{id}:
+    get:
+      summary: Статус платежа
+      tags:
+      - Payment Controller
+      operationId: getPaymentStatus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                enum:
+                - SUCCEEDED
+                - FAILED
+        "404":
+          description: Payment Not found
+        "500":
+          description: Internal Server Error
+  /notifications:
+    post:
+      summary: Создать уведомление
+      tags:
+      - Notification Controller
+      operationId: createNotification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                  - DELIVERED
+                  - PLANNED
+                  - CANCELED
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  text:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - DELIVERED
+                    - PLANNED
+                    - CANCELED
+        "500":
+          description: Internal Server Error
+  /notifications/{id}/status:
+    patch:
+      summary: Обновить стутс уведомления
+      tags:
+      - Notification Controller
+      operationId: updateNotificationStatus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: status
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - DELIVERED
+          - PLANNED
+          - CANCELED
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  text:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - DELIVERED
+                    - PLANNED
+                    - CANCELED
+        "404":
+          description: Notification Not found
+        "500":
+          description: Internal Server Error
+  /couriers:
+    get:
+      summary: Список курьеров
+      tags:
+      - Courier Controller
+      operationId: courierList
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    status:
+                      type: string
+                      enum:
+                      - ONLINE
+                      - OFFLINE
+        "500":
+          description: Internal Server Error
+    post:
+      summary: Зарегистрировать курьера
+      tags:
+      - Courier Controller
+      operationId: registerCourier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                  - ONLINE
+                  - OFFLINE
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - ONLINE
+                    - OFFLINE
+        "500":
+          description: Internal Server Error
+  /couriers/{id}/status:
+    patch:
+      summary: Изменить статус курьера
+      tags:
+      - Courier Controller
+      operationId: changeCourierStatus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: status
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - ONLINE
+          - OFFLINE
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - ONLINE
+                    - OFFLINE
+        "404":
+          description: Courier Not found
+        "500":
+          description: Internal Server Error
+  /couriers/{id}/userOrders:
+    get:
+      summary: Список активных заказов курьера
+      tags:
+      - Courier Controller
+      operationId: activeCourierOrders
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      enum:
+                      - NOT_PAYED
+                      - CONFIRMED
+                      - IN_PROGRESS
+                      - READY
+                      - ACTIVE
+                      - DELIVERED
+                      - CANCELLED
+                    totalCost:
+                      type: number
+                      format: double
+                    dishes:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          cost:
+                            type: number
+                            format: double
+                          dishAvailability:
+                            type: string
+                            enum:
+                            - AVAILABLE
+                            - NOT_AVAILABLE
+                          restaurantId:
+                            type: integer
+                            format: int64
+                    userId:
+                      type: integer
+                      format: int64
+                    courierId:
+                      type: integer
+                      format: int64
+        "404":
+          description: Courier Not found
+        "500":
+          description: Internal Server Error
+  /cart/items:
+    post:
+      summary: Добавить в корзину
+      tags:
+      - Cart Controller
+      operationId: addInCart
+      parameters:
+      - name: userId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: dishId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  dishes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        cost:
+                          type: number
+                          format: double
+                        dishAvailability:
+                          type: string
+                          enum:
+                          - AVAILABLE
+                          - NOT_AVAILABLE
+                        restaurantId:
+                          type: integer
+                          format: int64
+                  totalCost:
+                    type: number
+                    format: double
+                  userId:
+                    type: integer
+                    format: int64
+        "404":
+          description: Cart Not found
+        "500":
+          description: Internal Server Error
+  /cart:
+    get:
+      summary: Корзина пользователя
+      tags:
+      - Cart Controller
+      operationId: getCart
+      parameters:
+      - name: userId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  dishes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        cost:
+                          type: number
+                          format: double
+                        dishAvailability:
+                          type: string
+                          enum:
+                          - AVAILABLE
+                          - NOT_AVAILABLE
+                        restaurantId:
+                          type: integer
+                          format: int64
+                  totalCost:
+                    type: number
+                    format: double
+                  userId:
+                    type: integer
+                    format: int64
+        "404":
+          description: User Not found
+        "500":
+          description: Internal Server Error
+    delete:
+      summary: Очистить корзину пользователя
+      tags:
+      - Cart Controller
+      operationId: clearCart
+      parameters:
+      - name: userId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: User Not found
+        "500":
+          description: Internal Server Error
+  /cart/items/{id}:
+    delete:
+      summary: Удалить из корзины
+      tags:
+      - Cart Controller
+      operationId: deleteFromCart
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: dishId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  dishes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        cost:
+                          type: number
+                          format: double
+                        dishAvailability:
+                          type: string
+                          enum:
+                          - AVAILABLE
+                          - NOT_AVAILABLE
+                        restaurantId:
+                          type: integer
+                          format: int64
+                  totalCost:
+                    type: number
+                    format: double
+                  userId:
+                    type: integer
+                    format: int64
+        "404":
+          description: User Not found
+        "500":
+          description: Internal Server Error
+components:
+  schemas:
+    UserDto:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+          - USER
+          - ADMIN
+        name:
+          type: string
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - DISABLED
+    ReviewDto:
+      type: object
+      properties:
+        rating:
+          type: integer
+          format: int32
+          maximum: 5
+          minimum: 1
+        text:
+          type: string
+        userId:
+          type: integer
+          format: int64
+        restaurantId:
+          type: integer
+          format: int64
+    RestaurantDto:
+      type: object
+      properties:
+        name:
+          type: string
+        adress:
+          type: string
+        status:
+          type: string
+          enum:
+          - OPEN
+          - CLOSED
+        cuisineType:
+          type: string
+          enum:
+          - ASIAN
+          - PIZZA
+          - BURGERS
+          - SUSHI
+          - PASTA
+        rating:
+          type: number
+          format: double
+    DishDto:
+      type: object
+      properties:
+        name:
+          type: string
+        cost:
+          type: number
+          format: double
+        dishAvailability:
+          type: string
+          enum:
+          - AVAILABLE
+          - NOT_AVAILABLE
+        restaurantId:
+          type: integer
+          format: int64
+    OrderDto:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - NOT_PAYED
+          - CONFIRMED
+          - IN_PROGRESS
+          - READY
+          - ACTIVE
+          - DELIVERED
+          - CANCELLED
+        totalCost:
+          type: number
+          format: double
+        dishes:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              cost:
+                type: number
+                format: double
+              dishAvailability:
+                type: string
+                enum:
+                - AVAILABLE
+                - NOT_AVAILABLE
+              restaurantId:
+                type: integer
+                format: int64
+        userId:
+          type: integer
+          format: int64
+        courierId:
+          type: integer
+          format: int64
+    PaymentDto:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - SUCCEEDED
+          - FAILED
+        userId:
+          type: integer
+          format: int64
+        orderId:
+          type: integer
+          format: int64
+    NotificationDto:
+      type: object
+      properties:
+        text:
+          type: string
+        status:
+          type: string
+          enum:
+          - DELIVERED
+          - PLANNED
+          - CANCELED
+    CourierDto:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+          enum:
+          - ONLINE
+          - OFFLINE
+    CartDto:
+      type: object
+      properties:
+        dishes:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              cost:
+                type: number
+                format: double
+              dishAvailability:
+                type: string
+                enum:
+                - AVAILABLE
+                - NOT_AVAILABLE
+              restaurantId:
+                type: integer
+                format: int64
+        totalCost:
+          type: number
+          format: double
+        userId:
+          type: integer
+          format: int64
